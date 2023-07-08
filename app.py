@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = 'bhawna19' 
 
 
-DATABASE = '/Users/bhawnaarora/Documents/hello_flask/todo.db'
+DATABASE = 'todo.db'
 
 def initialize_database():
     conn = sqlite3.connect(DATABASE)
