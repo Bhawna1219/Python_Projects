@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body style="background-color: rgb(182, 128, 128);">
+    <h1>Registeration Page</h1>
+    <div class="container">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <form id="register-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br><br>
+            <input type="submit" value="Register">
+        </form>
+    </div> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#register-form').on('submit', function(e) {
+                e.preventDefault();
+
+                var username = $('#username').val();
+                var password = $('#password').val();
+
+                $.ajax({
+                    url: '/register',
+                    type: 'POST',
+                    data: {username: username, password: password},
+                    success: function(response) {
+                        alert('Registration successful!');
+                        window.location.href = '/login';
+                    },
+                    error: function(xhr) {
+                        alert(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

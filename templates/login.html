@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body style="background-color: rgb(182, 150, 78);">
+    <h1>Login Page</h1><br><br>
+    <div class="container">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#login-form').on('submit', function(e) {
+                e.preventDefault();
+
+                var username = $('#username').val();
+                var password = $('#password').val();
+
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    data: {username: username, password: password},
+                    success: function(response) {
+                        if (response.success) {
+                            // Login successful
+                            alert('Login successful!');
+                            window.location.href = '/tasks';
+                        } else {
+                            // Login failed
+                            alert('Login failed: ' + response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error: ' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

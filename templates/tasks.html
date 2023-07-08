@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ToDo List</title>
+</head>
+<body style="background-color: rgb(159, 165, 168);">
+    <h1>TaskMaster Application</h1>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <div class="container">
+        <div id="task-form">
+            <h2>Add a New Task</h2>
+            <form action="/add_task" method="POST">
+                <input type="text" name="title" placeholder="Title" required>
+                <input type="text" name="description" placeholder="Description">
+                <input type="submit" value="Add Task">
+            </form>
+        </div>
+
+        <div id="task-list">
+            <h2>My Tasks</h2>
+            <ul>
+                {% for task in tasks %}
+                    <li>
+                        <h3>{{ task[1] }}</h3>
+                        {% if task[2] %}
+                            <p>{{ task[2] }}</p>
+                        {% endif %}
+                        <p>Status: {{ task[3] }}</p>
+                        <form action="/update_task/{{ task[0] }}" method="POST">
+                            <select name="status">
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                            <input type="submit" value="Update Status">
+                        </form>
+                        <form action="/delete_task/{{ task[0] }}" method="POST">
+                            <input type="submit" value="Delete Task">
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="top-buttons">
+        <form action="/logout">
+            <button class="button1" type="submit">logout</button>
+        </form>
+    </div>
+</body>
+</html>
