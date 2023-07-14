@@ -60,6 +60,7 @@ def register():
             return 'Username already exists'
 
         # Insert the new user into the database
+        hashed_password = generate_password_hash(password)
         cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password))
         conn.commit()
         conn.close()
@@ -79,9 +80,10 @@ def login():
         cursor = conn.cursor()
 
         # Check if the username and password match
-        cursor.execute('SELECT id FROM users WHERE username=? AND password=?', (username, password))
+        cursor.execute('SELECT id, password FROM users WHERE username=?', (username,))
         user = cursor.fetchone()
-        if user:
+        if user and check_password_hash(user[1], password):
+            session['username'] = username
             session['user_id'] = user[0]
             conn.close()
             return jsonify({'success': True})
